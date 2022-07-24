@@ -1,3 +1,4 @@
+import { BsPlusCircle } from "react-icons/bs";
 import styles from "./newTask.module.scss";
 
 export function NewTask() {
@@ -5,7 +6,9 @@ export function NewTask() {
     <div className={styles.container}>
       <form>
         <input type="text" placeholder="Adicione uma nova tarefa" />
-        <button type="submit">Criar</button>
+        <button type="submit">
+          Criar <BsPlusCircle />
+        </button>
       </form>
     </div>
   );
