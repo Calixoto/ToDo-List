@@ -1,26 +1,40 @@
 import styles from "./listTasks.module.scss";
-export function ListTasks() {
+
+interface ListTasksProps {
+  taskText: string;
+  handleCompleteTask: () => void;
+  handleDeleteTask: () => void;
+  isActive: boolean;
+}
+
+export function ListTasks({
+  taskText,
+  handleCompleteTask,
+  isActive = false,
+  handleDeleteTask,
+}: ListTasksProps) {
   return (
     <div className={styles.container}>
-      <div>
-        <button>
+      <div className={isActive ? styles.active : ""}>
+        <button type="button" onClick={handleCompleteTask}>
           <img
-            src="/images/check.svg"
+            src={!isActive ? "/images/check.svg" : "/images/checked.svg"}
             alt="checkbox"
             style={{ width: "17px", height: "17px" }}
           />
           <img
-            src="/images/check-hover.svg"
+            src={
+              !isActive
+                ? "/images/check-hover.svg"
+                : "/images/checked-hover.svg"
+            }
             alt="checkbox"
             className={styles.onHover}
             style={{ width: "17px", height: "17px" }}
           />
         </button>
-        <p>
-          Integer urna interdum massa libero auctor neque turpis turpis semper.
-          Duis vel sed fames integer.
-        </p>
-        <button>
+        <p>{taskText}</p>
+        <button type="button" onClick={handleDeleteTask}>
           <img
             src="/images/trash.svg"
             style={{ width: "12px", height: "14px" }}

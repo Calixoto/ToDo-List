@@ -1,8 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { EmptyTasks } from "../EmptyTasks";
 import { ListTasks } from "../ListTasks";
 import styles from "./tasks.module.scss";
-export function Tasks() {
-  const [countTask, setCountTask] = useState(5);
+
+interface TasksProps {
+  isEmpty: boolean;
+  countCompletedTask: number;
+  handleDeleteTask: (id: number) => void;
+  handleCompleteTask: (id: number) => void;
+  tasks: {
+    id: number;
+    text: string;
+    isCompleted: boolean;
+  }[];
+}
+
+export function Tasks({
+  tasks,
+  isEmpty,
+  handleCompleteTask,
+  countCompletedTask,
+  handleDeleteTask,
+}: TasksProps) {
+  const [countTask, setCountTask] = useState(0);
+
+  useEffect(() => {
+    if (tasks[0].text === "") {
+      setCountTask(0);
+    } else {
+      setCountTask(tasks.length);
+    }
+  }, [tasks]);
   return (
     <div className={styles.container}>
       <div>
@@ -16,19 +44,24 @@ export function Tasks() {
           <h2>Concluídas</h2>
           <span>
             <strong>
-              5 de 5
-              {/* {countTask !== 0 ? countTask + " de" + countTask : 0} */}
+              {countTask !== 0 ? countCompletedTask + " de " + countTask : 0}
             </strong>
           </span>
         </section>
       </div>
-      {/* <EmptyTasks /> */}
-      {[1, 2, 3, 4, 5].map((item) => (
-        <ListTasks key={item} />
-      ))}
-      {/* <ul>
-        <li></li>
-      </ul> */}
+      {isEmpty ? (
+        <EmptyTasks />
+      ) : (
+        tasks.map((task) => (
+          <ListTasks
+            handleDeleteTask={() => handleDeleteTask(task.id)}
+            isActive={task.isCompleted}
+            handleCompleteTask={() => handleCompleteTask(task.id)}
+            taskText={task.text}
+            key={task.id}
+          />
+        ))
+      )}
     </div>
   );
 }
